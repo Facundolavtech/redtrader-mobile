@@ -14,18 +14,17 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     margin: "auto",
-    marginBottom: 50,
+    marginBottom: 40,
   },
 
   form__input: {
     width: "100%",
     fontSize: 15,
-    marginBottom: 30,
+    marginBottom: 20,
     borderRadius: 5,
     borderBottomWidth: 1,
     borderColor: MainTheme.borderOpacity,
     paddingVertical: 10,
-    paddingLeft: 15,
   },
 
   btn__submit: {
@@ -35,14 +34,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     width: "100%",
-    backgroundColor: "red",
+    backgroundColor: MainTheme.primary,
     marginTop: 20,
+    elevation: 2,
   },
 
   btn__submit__text: {
-    fontSize: 15,
+    fontSize: 17,
     color: "#fff",
-    fontWeight: "500",
   },
 });
 

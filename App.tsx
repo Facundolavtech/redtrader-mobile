@@ -5,6 +5,8 @@ import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import StackNavigator from "./navigation/StackNavigator";
 import { AuthProvider } from "./context/AuthContext";
+import Toast from "react-native-toast-message";
+import toastConfig from "./config/toast";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -23,6 +25,11 @@ export default function App() {
       <NavigationContainer>
         <AuthProvider>
           <StackNavigator />
+          <Toast
+            config={toastConfig}
+            ref={(ref) => Toast.setRef(ref)}
+            visibilityTime={1000}
+          />
         </AuthProvider>
       </NavigationContainer>
       <StatusBar style="auto" />

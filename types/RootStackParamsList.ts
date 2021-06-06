@@ -1,4 +1,4 @@
 export type RootStackParamList = {
-  Signals: undefined;
-  Login: undefined;
+  SignalsScreen: undefined;
+  LoginScreen: undefined;
 };

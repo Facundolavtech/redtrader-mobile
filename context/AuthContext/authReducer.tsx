@@ -1,7 +1,8 @@
 import { AuthState } from "../../types/AuthContext";
 
 type AuthAction = {
-  type: "SIGN_IN";
+  type: string;
+  payload?: any;
 };
 
 export const authReducer = (
@@ -13,18 +14,16 @@ export const authReducer = (
       return {
         ...state,
         loading: true,
-        isLoggedIn: true,
-        userInfo: null,
       };
-    // case "SIGN_IN_SUCCESS":
-    //   return {
-    //     ...state,
-    //     loading: false,
-    //     isLoggedIn: true,
-    //     userInfo: action.payload,
-    //   };
-    // case "SIGN_IN_ERROR":
-    //   return { ...state, loading: false, userInfo: null, isLoggedIn: false };
+    case "SIGN_IN_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+        isLoggedIn: true,
+        userInfo: action.payload,
+      };
+    case "SIGN_IN_ERROR":
+      return { ...state, loading: false, userInfo: null, isLoggedIn: false };
 
     default:
       return state;

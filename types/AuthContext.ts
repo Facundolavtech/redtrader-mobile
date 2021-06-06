@@ -1,11 +1,13 @@
 export interface AuthState {
   isLoggedIn: boolean;
-  userInfo?: null;
+  userInfo?: object | null;
   loading: boolean;
-  signIn?: () => void;
+  signIn?: (payload: string) => void;
 }
 
 export interface AuthContextProps {
   authState: AuthState;
-  signIn: () => void;
+  signIn: (payload: string | null) => void;
+  auth: (token: string) => void;
+  signInLoading: () => void;
 }

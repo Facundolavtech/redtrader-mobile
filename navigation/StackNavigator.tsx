@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
 import "react-native-gesture-handler";
+import React, { useContext } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
+import { AuthContext } from "../context/AuthContext";
 import LoginScreen from "../screens/LoginScreen";
 import SignalsScreen from "../screens/SignalsScreen";
-import { AuthContext } from "../context/AuthContext";
 
 const Stack = createStackNavigator();
 
@@ -13,11 +13,13 @@ function StackNavigator() {
   return (
     <Stack.Navigator>
       {authState.isLoggedIn ? (
-        <Stack.Screen
-          name="SignalsScreen"
-          component={SignalsScreen}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Screen
+            name="SignalsScreen"
+            component={SignalsScreen}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : (
         <Stack.Screen
           name="LoginScreen"

@@ -8,12 +8,12 @@ export async function LoginService(email: string, password: string) {
         return { status: res.status, token: res.data.token };
       })
       .catch((err) => {
-        return { status: err.response.status, msg: err.response.data };
+        return { status: err.response, msg: err.response.data };
       });
 
     return response;
   } catch (error) {
-    console.log(error);
+    return;
   }
 }
 
@@ -30,6 +30,6 @@ export async function AuthService(token: string) {
 
     return response;
   } catch (error) {
-    console.log(error);
+    return;
   }
 }

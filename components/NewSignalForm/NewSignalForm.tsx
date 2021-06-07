@@ -14,6 +14,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { CreateSignalService } from "../../services/Signals";
 import deviceStorage from "../../services/deviceStorage";
 import Toast from "react-native-toast-message";
+import { SendToAllService } from "../../services/Notifications";
 
 interface NewSignalFormProps {
   setModalVisible: Function;
@@ -122,6 +123,7 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
 
       if (response.status === 200) {
         Toast.show({ type: "success", text1: response.msg });
+        await SendToAllService(token, market.label);
         setModalVisible(false);
       }
     }

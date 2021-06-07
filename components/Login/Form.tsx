@@ -11,22 +11,42 @@ import { AuthContext } from "../../context/AuthContext";
 import { LoginService } from "../../services/Auth";
 import styles from "../../styles/LoginForm";
 import Toast from "react-native-toast-message";
+import LoginFormValidations from "../../utils/Validations/LoginForm";
+import ErrorMsg from "../ErrorMsg";
+import { AuthContextProps } from "../../types/AuthContext";
 
 const Form = () => {
   const [email, onChangeEmail] = useState("");
   const [password, onChangePassword] = useState("");
+  const [errorState, setErrorState] = useState<any>(null);
 
   const {
     signIn,
     signInLoading,
     authState: { loading },
-  } = useContext(AuthContext);
+  } = useContext<AuthContextProps>(AuthContext);
 
   const clearForm = () => {
     onChangePassword("");
   };
 
+  const validateForm = () => {
+    const errors = LoginFormValidations({ email, password });
+
+    if (Object.keys(errors).length > 0) {
+      setErrorState(errors);
+      return;
+    }
+  };
+
   const handleSubmit = async () => {
+    const errors = LoginFormValidations({ email, password });
+
+    if (Object.keys(errors).length > 0) {
+      setErrorState(errors);
+      return;
+    }
+
     signInLoading();
 
     const response: any = await LoginService(email, password);
@@ -50,19 +70,24 @@ const Form = () => {
         placeholder="Email"
         placeholderTextColor="#333"
         value={email}
+        onChange={validateForm}
         onChangeText={onChangeEmail}
         style={{ ...styles.form__input, fontFamily: "RubikLight" }}
         keyboardType="email-address"
       />
+      {errorState && errorState.email && <ErrorMsg field={errorState.email} />}
       <TextInput
         placeholder="Contraseña"
         placeholderTextColor="#333"
         onChangeText={onChangePassword}
+        onChange={validateForm}
         value={password}
         style={{ ...styles.form__input, fontFamily: "RubikLight" }}
         secureTextEntry
       />
-
+      {errorState && errorState.password && (
+        <ErrorMsg field={errorState.password} />
+      )}
       <TouchableOpacity
         onPress={handleSubmit}
         style={{ ...styles.btn__submit }}

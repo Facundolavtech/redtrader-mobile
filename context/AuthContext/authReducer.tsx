@@ -22,9 +22,9 @@ export const authReducer = (
         isLoggedIn: true,
         userInfo: action.payload,
       };
+    case "SIGN_OUT":
     case "SIGN_IN_ERROR":
       return { ...state, loading: false, userInfo: null, isLoggedIn: false };
-
     default:
       return state;
   }

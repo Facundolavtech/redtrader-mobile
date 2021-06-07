@@ -10,4 +10,5 @@ export interface AuthContextProps {
   signIn: (payload: string | null) => void;
   auth: (token: string) => void;
   signInLoading: () => void;
+  signOut: () => void;
 }

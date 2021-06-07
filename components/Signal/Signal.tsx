@@ -3,30 +3,42 @@ import { StyleSheet, Text, View } from "react-native";
 import MainTheme from "../../theme/main";
 
 interface SignalsProps {
-  sell?: Boolean;
+  signal?: any;
 }
 
-const Signal = ({ sell }: SignalsProps) => {
+const Signal = ({ signal }: SignalsProps) => {
+  const {
+    instrument,
+    operation_type,
+    market,
+    execution_type,
+    entry_point,
+    stop_loss,
+    take_profit,
+  } = signal;
+
+  const { value } = operation_type;
+
   return (
     <View style={styles.signal__card}>
       <View
         style={{
           ...styles.card__header,
-          backgroundColor: sell ? MainTheme.primary : "#25c705",
+          backgroundColor: value === "sell" ? MainTheme.primary : "#25c705",
         }}
       >
         <Text style={{ ...styles.signal__pair, fontFamily: "RubikMedium" }}>
-          AUD/JPY
+          {instrument}
         </Text>
         <Text
           style={{ ...styles.signal__type_text, fontFamily: "RubikMedium" }}
         >
-          {sell ? "VENTA" : "COMPRA"}
+          {operation_type.label}
         </Text>
       </View>
       <View style={styles.space__between}>
         <Text style={{ ...styles.signal__market, fontFamily: "RubikMedium" }}>
-          Forex
+          {market.label}
         </Text>
         <Text
           style={{
@@ -34,26 +46,27 @@ const Signal = ({ sell }: SignalsProps) => {
             fontFamily: "RubikMedium",
           }}
         >
-          Ejecucion por mercado
+          {execution_type.label}
         </Text>
       </View>
       <View style={styles.signal__value_container}>
         <Text
           style={{ ...styles.entry__point_title, fontFamily: "RubikRegular" }}
         >
-          Punto de entrada: <Text style={styles.entry__point}>1.2558</Text>
+          Punto de entrada:{" "}
+          <Text style={styles.entry__point}>{entry_point}</Text>
         </Text>
       </View>
       <View style={styles.signal__value_container}>
         <Text style={{ ...styles.stoploss__title, fontFamily: "RubikRegular" }}>
-          Stop Loss: <Text style={styles.stoploss}>1.5880</Text>
+          Stop Loss: <Text style={styles.stoploss}>{stop_loss}</Text>
         </Text>
       </View>
       <View style={styles.signal__value_container}>
         <Text
           style={{ ...styles.takeprofit__title, fontFamily: "RubikRegular" }}
         >
-          Take Profit: <Text style={styles.takeprofit}>1.1550</Text>
+          Take Profit: <Text style={styles.takeprofit}>{take_profit}</Text>
         </Text>
       </View>
     </View>

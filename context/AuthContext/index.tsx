@@ -38,8 +38,14 @@ export const AuthProvider = ({ children }: any) => {
     }
   };
 
+  const signOut = () => {
+    dispatch({ type: "SIGN_OUT" });
+  };
+
   return (
-    <AuthContext.Provider value={{ authState, signIn, auth, signInLoading }}>
+    <AuthContext.Provider
+      value={{ authState, signIn, auth, signInLoading, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

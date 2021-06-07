@@ -6,9 +6,14 @@ const toastConfig = {
   success: ({ text1, ...rest }) => (
     <BaseToast
       {...rest}
-      style={{ borderLeftColor: "#4fd312", width: "90%", marginTop: 30 }}
+      style={{
+        borderLeftColor: "#4fd312",
+        width: "90%",
+        marginTop: 30,
+        borderRadius: 0,
+      }}
       text1NumberOfLines={0}
-      contentContainerStyle={{ paddingHorizontal: 15, paddingVertical: 10 }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
       text1Style={{
         fontSize: 14,
         fontFamily: "RubikRegular",

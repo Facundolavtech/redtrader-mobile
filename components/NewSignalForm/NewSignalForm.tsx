@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import RNPickerSelect from "react-native-picker-select";
 import {
   StyleSheet,
@@ -8,6 +8,12 @@ import {
   View,
 } from "react-native";
 import MainTheme from "../../theme/main";
+import NewSignalFormValidations from "../../utils/Validations/NewSignalForm";
+import ErrorMsg from "../ErrorMsg";
+import { ScrollView } from "react-native-gesture-handler";
+import { CreateSignalService } from "../../services/Signals";
+import deviceStorage from "../../services/deviceStorage";
+import Toast from "react-native-toast-message";
 
 interface NewSignalFormProps {
   setModalVisible: Function;
@@ -25,14 +31,49 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
       value: null,
       color: "#5f5f5f",
     },
-    signal_type: {
+    operation_type: {
       label: "Tipo de operacion",
       value: null,
       color: "#5f5f5f",
     },
   };
+  const [errorState, setErrorState] = useState<any>({});
 
-  const execution_type_items = [
+  const [instrument, setInstrument] = useState("");
+  const [operation_type, setOperationType] = useState({
+    label: placeholder_list.operation_type.label,
+    value: null,
+  });
+  const [market, setMarket] = useState({
+    label: placeholder_list.markets.label,
+    value: null,
+  });
+  const [execution_type, setExecutionType] = useState({
+    label: placeholder_list.execution_type.label,
+    value: null,
+  });
+  const [entry_point, setEntryPoint] = useState("");
+  const [stop_loss, setStopLoss] = useState("");
+  const [take_profit, setTakeProfit] = useState("");
+
+  const operation_type_items: any = [
+    {
+      label: placeholder_list.operation_type.label,
+      value: placeholder_list.operation_type.value,
+    },
+    { label: "Compra", value: "buy" },
+    { label: "Venta", value: "sell" },
+  ];
+  const markets_items: any = [
+    {
+      label: placeholder_list.markets.label,
+      value: placeholder_list.markets.value,
+    },
+    { label: "Forex", value: "forex" },
+    { label: "Criptomonedas", value: "critomonedas" },
+    { label: "Acciones", value: "acciones" },
+  ];
+  const execution_type_items: any = [
     {
       label: placeholder_list.execution_type.label,
       value: placeholder_list.execution_type.value,
@@ -44,73 +85,173 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
     { label: "Buy Stop", value: "buy_stop" },
   ];
 
+  const validateForm = () => {
+    const errors = NewSignalFormValidations({
+      instrument,
+      market,
+      operation_type,
+      execution_type,
+      entry_point,
+      stop_loss,
+      take_profit,
+    });
+
+    setErrorState(errors);
+    return errors;
+  };
+
+  const handleSubmit = async () => {
+    const errors = validateForm();
+
+    if (Object.keys(errors).length > 0) {
+      return;
+    } else {
+      const data = {
+        instrument: instrument.toUpperCase(),
+        market,
+        operation_type,
+        execution_type,
+        entry_point,
+        stop_loss,
+        take_profit,
+      };
+
+      const token: any = await deviceStorage.getItem("authToken");
+
+      const response: any = await CreateSignalService(data, token);
+
+      if (response.status === 200) {
+        Toast.show({ type: "success", text1: response.msg });
+        setModalVisible(false);
+      }
+    }
+  };
+
   return (
-    <View style={styles.newsignal__form}>
-      <View style={styles.form__title_container}>
-        <Text style={styles.form__title}>Nueva señal</Text>
+    <View style={{ ...styles.newsignal__form }}>
+      <ScrollView>
+        <View style={styles.form__title_container}>
+          <Text style={styles.form__title}>Nueva señal</Text>
+          <TouchableOpacity
+            style={styles.form__btn_close}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style={{ color: "#fff", fontFamily: "RubikMedium" }}>✖</Text>
+          </TouchableOpacity>
+        </View>
+        <TextInput
+          placeholder="Instrumento: Ej... AUD/NZD"
+          style={{ ...styles.textinput }}
+          value={instrument}
+          onChange={validateForm}
+          onChangeText={setInstrument}
+        />
+        {errorState && errorState.instrument && (
+          <ErrorMsg field={errorState.instrument} />
+        )}
+        <RNPickerSelect
+          useNativeAndroidPickerStyle={false}
+          placeholder={placeholder_list.operation_type}
+          style={pickerSelectStyles}
+          onValueChange={(value, index) => {
+            validateForm(),
+              setOperationType({
+                ...operation_type,
+                label: operation_type_items[index].label,
+                value: operation_type_items[index].value,
+              });
+          }}
+          items={[
+            { label: "Compra", value: "buy" },
+            { label: "Venta", value: "sell" },
+          ]}
+        />
+        {errorState && errorState.operationType && (
+          <ErrorMsg field={errorState.operation_type} />
+        )}
+        <RNPickerSelect
+          useNativeAndroidPickerStyle={false}
+          placeholder={placeholder_list.markets}
+          style={pickerSelectStyles}
+          onValueChange={(value, index) => {
+            validateForm(),
+              setMarket({
+                ...market,
+                label: markets_items[index].label,
+                value: markets_items[index].value,
+              });
+          }}
+          items={[
+            { label: "Forex", value: "forex" },
+            { label: "Criptomonedas", value: "critomonedas" },
+            { label: "Acciones", value: "acciones" },
+          ]}
+        />
+        {errorState && errorState.market && (
+          <ErrorMsg field={errorState.market} />
+        )}
+        <RNPickerSelect
+          useNativeAndroidPickerStyle={false}
+          placeholder={placeholder_list.execution_type}
+          style={pickerSelectStyles}
+          onValueChange={(value, index) => {
+            validateForm(),
+              setExecutionType({
+                ...execution_type,
+                label: execution_type_items[index].label,
+                value: execution_type_items[index].value,
+              });
+          }}
+          items={[
+            { label: "Ejecucion por mercado", value: "market" },
+            { label: "Sell Limit", value: "sell_limit" },
+            { label: "Buy Limit", value: "buy_limit" },
+            { label: "Sell Stop", value: "sell_stop" },
+            { label: "Buy Stop", value: "buy_stop" },
+          ]}
+        />
+        {errorState && errorState.executionType && (
+          <ErrorMsg field={errorState.execution_type} />
+        )}
+        <Text style={styles.parameters__title}>Parametros</Text>
+        <TextInput
+          value={entry_point}
+          onChangeText={setEntryPoint}
+          onChange={validateForm}
+          placeholder="Punto de entrada"
+          style={{ ...styles.textinput }}
+        />
+        {errorState && errorState.entryPoint && (
+          <ErrorMsg field={errorState.entry_point} />
+        )}
+        <TextInput
+          value={stop_loss}
+          onChangeText={setStopLoss}
+          onChange={validateForm}
+          placeholder="Stop Loss"
+          style={{ ...styles.textinput, ...styles.stoploss }}
+        />
+        {errorState && errorState.stopLoss && (
+          <ErrorMsg field={errorState.stop_loss} />
+        )}
+        <TextInput
+          value={take_profit}
+          onChangeText={setTakeProfit}
+          onChange={validateForm}
+          placeholder="Take Profit"
+          style={{ ...styles.textinput, ...styles.takeprofit }}
+        />
+        {errorState && errorState.takeProfit && (
+          <ErrorMsg field={errorState.take_profit} />
+        )}
         <TouchableOpacity
-          style={styles.form__btn_close}
-          onPress={() => setModalVisible(false)}
+          style={{ ...styles.btn__submit }}
+          activeOpacity={0.6}
+          onPress={handleSubmit}
         >
-          <Text style={{ color: "#fff", fontFamily: "RubikMedium" }}>✖</Text>
+          <Text style={styles.btn__submit_text}>Enviar</Text>
         </TouchableOpacity>
-      </View>
-      <TextInput
-        placeholder="Instrumento: Ej... AUD/NZD"
-        style={{ ...styles.textinput }}
-      />
-      <RNPickerSelect
-        useNativeAndroidPickerStyle={false}
-        placeholder={placeholder_list.signal_type}
-        style={pickerSelectStyles}
-        onValueChange={(value) => console.log(value)}
-        items={[
-          { label: "Compra", value: "buy" },
-          { label: "Venta", value: "sell" },
-        ]}
-      />
-      <RNPickerSelect
-        useNativeAndroidPickerStyle={false}
-        placeholder={placeholder_list.markets}
-        style={pickerSelectStyles}
-        onValueChange={(value) => console.log()}
-        items={[
-          { label: "Forex", value: "forex" },
-          { label: "Criptomonedas", value: "critomonedas" },
-          { label: "Acciones", value: "acciones" },
-        ]}
-      />
-      <RNPickerSelect
-        useNativeAndroidPickerStyle={false}
-        placeholder={placeholder_list.execution_type}
-        style={pickerSelectStyles}
-        onValueChange={(value, index) =>
-          console.log(execution_type_items[index])
-        }
-        items={[
-          { label: "Ejecucion por mercado", value: "market" },
-          { label: "Sell Limit", value: "sell_limit" },
-          { label: "Buy Limit", value: "buy_limit" },
-          { label: "Sell Stop", value: "sell_stop" },
-          { label: "Buy Stop", value: "buy_stop" },
-        ]}
-      />
-      <Text style={styles.parameters__title}>Parametros</Text>
-      <TextInput
-        placeholder="Punto de entrada"
-        style={{ ...styles.textinput }}
-      />
-      <TextInput
-        placeholder="Stop Loss"
-        style={{ ...styles.textinput, ...styles.stoploss }}
-      />
-      <TextInput
-        placeholder="Take Profit"
-        style={{ ...styles.textinput, ...styles.takeprofit }}
-      />
-      <TouchableOpacity style={{ ...styles.btn__submit }} activeOpacity={0.6}>
-        <Text style={styles.btn__submit_text}>Enviar</Text>
-      </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -134,7 +275,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderBottomColor: "rgba(51, 51, 51, 0.205)",
     color: "#565656",
     fontFamily: "RubikRegular",
-    marginBottom: 20,
+    marginBottom: 15,
     paddingRight: 30,
   },
 });
@@ -167,7 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textinput: {
-    marginBottom: 20,
+    marginBottom: 15,
     fontSize: 18,
     borderBottomWidth: 1,
     borderBottomColor: "rgba(51, 51, 51, 0.205)",

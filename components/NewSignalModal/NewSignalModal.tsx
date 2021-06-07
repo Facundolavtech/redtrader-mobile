@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import NewSignalForm from "../NewSignalForm";
 
 const NewSignalModal = () => {
@@ -16,8 +17,13 @@ const NewSignalModal = () => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={{ ...styles.centeredView, marginBottom: 0 }}>
-          <View style={styles.modalView}>
+        <View
+          style={{
+            ...styles.centeredView,
+            marginBottom: 0,
+          }}
+        >
+          <View style={{ ...styles.modalView }}>
             <NewSignalForm setModalVisible={setModalVisible} />
           </View>
         </View>
@@ -54,6 +60,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 20,
     shadowRadius: 4,
+    paddingVertical: 50,
   },
   button: {
     borderRadius: 10,

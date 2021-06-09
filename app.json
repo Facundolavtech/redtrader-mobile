@@ -4,7 +4,7 @@
     "slug": "redtrader-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "https://www.redtraderacademy.com/favicon.ico",
+    "icon": "https://www.redtraderacademy.com/assets/img/logo.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },

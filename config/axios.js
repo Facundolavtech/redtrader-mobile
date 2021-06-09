@@ -8,5 +8,3 @@ const axiosClient = axios.create({
 });
 
 export default axiosClient;
-
-// https://redtrader-api.com:9443

@@ -2,7 +2,7 @@
   "expo": {
     "name": "redtrader-mobile",
     "slug": "redtrader-mobile",
-    "version": "2.0.0",
+    "version": "1.1.0",
     "orientation": "portrait",
     "icon": "https://www.redtraderacademy.com/assets/img/logo.png",
     "splash": {
@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.facuh1999.redtradermobile"
+      "package": "com.facuh1999.redtradermobile",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/logo.png"

@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React, { useEffect } from "react";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,11 +15,6 @@ export default function App() {
     RubikBold: require("./assets/Fonts/Rubik-Bold.ttf"),
     RubikLight: require("./assets/Fonts/Rubik-Light.ttf"),
   });
-
-  // const [expoPushToken, setExpoPushToken] = useState<any>("");
-  // const [notification, setNotification] = useState<any>(false);
-  // const notificationListener = useRef<any>();
-  // const responseListener = useRef<any>();
 
   if (!loaded) {
     return null;

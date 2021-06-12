@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "836333363163",
+    "project_id": "redtrader-mobile",
+    "storage_bucket": "redtrader-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836333363163:android:66dcbffdde8881c56751fe",
+        "android_client_info": {
+          "package_name": "com.facuh1999.redtradermobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836333363163-tv2r3ormle2hqiqqg2j8t43igjc3bk2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPXf-2ByE7TNlEVczkq6As1s66plRTg4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836333363163-tv2r3ormle2hqiqqg2j8t43igjc3bk2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

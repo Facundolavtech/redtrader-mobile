@@ -6,7 +6,7 @@ interface SignalsProps {
   signal?: any;
 }
 
-const Signal = ({ signal }: SignalsProps) => {
+const Signal = ({ signal: { data } }: SignalsProps) => {
   const {
     instrument,
     operation_type,
@@ -15,7 +15,7 @@ const Signal = ({ signal }: SignalsProps) => {
     entry_point,
     stop_loss,
     take_profit,
-  } = signal;
+  } = data;
 
   const { value } = operation_type;
 

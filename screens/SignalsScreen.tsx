@@ -72,11 +72,18 @@ const SignalsScreen = () => {
         setLoadingSignals(false);
         setSignals(response.data);
         setReloadTime(30);
+      } else if (response.status === 401) {
+        signOut();
+        Toast.show({
+          type: "error",
+          text1:
+            "Necesitas adquirir un plan para acceder a las señales de RedTrade",
+        });
       } else {
         signOut();
         Toast.show({
           type: "error",
-          text1: "Ocurrio un error al cargar las señales",
+          text1: "Ocurrio un error",
         });
       }
     }

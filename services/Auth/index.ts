@@ -22,7 +22,7 @@ export async function AuthService(token: string) {
     const response = await axiosClient
       .get("/users/auth", { headers: { Authorization: token } })
       .then((res) => {
-        return { status: res.status, user: res.data };
+        return { status: res.status, user: res.data.user };
       })
       .catch((err) => {
         return { status: err.response.status, msg: err.response.data };

@@ -1,5 +1,5 @@
 import React, { createContext, useReducer } from "react";
-import { AuthService, LoginService } from "../../services/Auth";
+import { AuthService } from "../../services/Auth";
 import deviceStorage from "../../services/deviceStorage";
 import { AuthContextProps, AuthState } from "../../types/AuthContext";
 import { authReducer } from "./authReducer";

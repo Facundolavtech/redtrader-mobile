@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import NewSignalForm from "../NewSignalForm";
 
 const NewSignalModal = () => {

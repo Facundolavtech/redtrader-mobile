@@ -71,7 +71,7 @@ const SignalsScreen = () => {
       if (response.status === 200) {
         setLoadingSignals(false);
         setSignals(response.data);
-        setReloadTime(30);
+        setReloadTime(15);
       } else if (response.status === 401) {
         signOut();
         Toast.show({
@@ -87,6 +87,12 @@ const SignalsScreen = () => {
         });
       }
     }
+  };
+
+  const filterSignal = (id: any) => {
+    const signalsFilter = signals.filter((signal: any) => signal._id !== id);
+
+    setSignals(signalsFilter);
   };
 
   return (
@@ -131,18 +137,26 @@ const SignalsScreen = () => {
           </View>
           <View
             style={{
-              paddingTop: userInfo && userInfo.roles.educator ? 50 : 120,
+              paddingTop:
+                userInfo && userInfo.roles.includes("educator") ? 50 : 120,
             }}
           >
-            {userInfo && userInfo.roles.educator && <NewSignalModal />}
+            {userInfo && userInfo.roles.includes("educator") && (
+              <NewSignalModal />
+            )}
             {signals && signals.length === 0 && (
               <View
                 style={{
-                  width: "100%",
+                  width: "90%",
+                  marginLeft: "auto",
+                  marginRight: "auto",
                   marginTop: 30,
+                  paddingVertical: 20,
                   display: "flex",
                   flexDirection: "row",
                   justifyContent: "center",
+                  backgroundColor: "#fff",
+                  borderRadius: 10,
                 }}
               >
                 <Text style={styles.no__signals}>
@@ -154,7 +168,12 @@ const SignalsScreen = () => {
             {signals &&
               signals.length > 0 &&
               signals.map((signal: any) => (
-                <Signal key={signal._id} signal={signal} />
+                <Signal
+                  key={signal._id}
+                  signal={signal}
+                  token={tokenState}
+                  filterSignal={filterSignal}
+                />
               ))}
           </View>
         </ScrollView>
@@ -181,10 +200,9 @@ const styles = StyleSheet.create({
 
   no__signals: {
     textAlign: "center",
-    fontFamily: "RubikBold",
-    fontSize: 20,
-    width: "90%",
-    color: "#696969",
+    fontFamily: "RubikMedium",
+    fontSize: 18,
+    color: "#2e2e2e",
   },
   reload__btn: {
     height: 50,

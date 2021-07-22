@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { AuthContext } from "../../context/AuthContext";
 import MainTheme from "../../theme/main";
+import SignalActions from "../SignalActions";
+import TimeAgo from "react-native-timeago";
+import moment from "moment";
+import "moment/locale/es-mx";
+moment.locale("es-mx");
 
-interface SignalsProps {
-  signal?: any;
+interface SignalData {
+  instrument: string;
+  operation_type: { value: string; label: string };
+  market: { value: string; label: string };
+  execution_type: { value: string; label: string };
+  entry_point: string;
+  stop_loss: string;
+  take_profit: string;
+  notes: string;
 }
 
-const Signal = ({ signal: { data } }: SignalsProps) => {
+type SignalType = {
+  _id: any;
+  data: SignalData;
+  createdAt: any;
+};
+
+interface SignalsProps {
+  signal: SignalType;
+  token: any;
+  filterSignal: any;
+}
+
+const Signal = ({
+  signal: { data, createdAt, _id },
+  token,
+  filterSignal,
+}: SignalsProps) => {
+  const {
+    authState: { userInfo },
+  }: any = useContext(AuthContext);
+
   const {
     instrument,
     operation_type,
@@ -15,9 +49,10 @@ const Signal = ({ signal: { data } }: SignalsProps) => {
     entry_point,
     stop_loss,
     take_profit,
+    notes,
   } = data;
 
-  const { value } = operation_type;
+  const { value }: any = operation_type;
 
   return (
     <View style={styles.signal__card}>
@@ -36,6 +71,12 @@ const Signal = ({ signal: { data } }: SignalsProps) => {
           {operation_type.label}
         </Text>
       </View>
+      <View style={styles.timeago__container}>
+        <Ionicons name="time-outline" size={30} color="#585858" />
+        <Text style={styles.timeago__time}>
+          <TimeAgo time={createdAt} />
+        </Text>
+      </View>
       <View style={styles.space__between}>
         <Text style={{ ...styles.signal__market, fontFamily: "RubikMedium" }}>
           {market.label}
@@ -49,6 +90,7 @@ const Signal = ({ signal: { data } }: SignalsProps) => {
           {execution_type.label}
         </Text>
       </View>
+
       <View style={styles.signal__value_container}>
         <Text
           style={{ ...styles.entry__point_title, fontFamily: "RubikRegular" }}
@@ -69,6 +111,15 @@ const Signal = ({ signal: { data } }: SignalsProps) => {
           Take Profit: <Text style={styles.takeprofit}>{take_profit}</Text>
         </Text>
       </View>
+      {notes !== null && notes !== "" && (
+        <View style={styles.notes__container}>
+          <Text style={styles.notes__title}>Notas adicionales</Text>
+          <Text style={styles.notes__body}>{notes}</Text>
+        </View>
+      )}
+      {userInfo && userInfo.roles.includes("educator") && (
+        <SignalActions id={_id} token={token} filterSignal={filterSignal} />
+      )}
     </View>
   );
 };
@@ -91,15 +142,29 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 
-  space__between: {
+  timeago__container: {
     width: "90%",
-    margin: "auto",
+    marginTop: 20,
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
+    justifyContent: "flex-start",
+  },
+
+  timeago__time: {
+    fontSize: 18,
+    color: "#585858",
+    marginLeft: 10,
+  },
+
+  space__between: {
+    width: "90%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
     marginVertical: 30,
-    marginBottom: 40,
   },
 
   card__header: {
@@ -125,12 +190,13 @@ const styles = StyleSheet.create({
 
   signal__market: {
     color: MainTheme.paragraphs,
-    fontSize: 20,
-    marginRight: 30,
+    fontSize: 25,
+    marginBottom: 10,
   },
 
   signal__execution_type: {
     fontSize: 15,
+    color: "#565656",
   },
 
   signal__value_container: {
@@ -174,5 +240,32 @@ const styles = StyleSheet.create({
   takeprofit: {
     color: "#10c019",
     fontSize: 17,
+  },
+
+  notes__container: {
+    width: "90%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+  },
+
+  notes__title: {
+    width: "100%",
+    fontSize: 20,
+    fontFamily: "RubikMedium",
+    color: "#333333",
+    marginBottom: 10,
+    borderBottomColor: MainTheme.borderOpacity,
+    borderBottomWidth: 1,
+    marginTop: 10,
+    paddingBottom: 10,
+  },
+
+  notes__body: {
+    fontSize: 18,
+    fontFamily: "RubikRegular",
+    color: "#424242",
   },
 });

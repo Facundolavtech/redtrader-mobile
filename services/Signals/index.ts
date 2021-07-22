@@ -42,3 +42,51 @@ export async function CreateSignalService(data: object, token: string) {
     return;
   }
 }
+
+export async function UpdateSignalService(
+  data: object,
+  token: string,
+  id: string
+) {
+  try {
+    const response = await axiosClient
+      .put(`/signals/update/${id}`, data, {
+        headers: { Authorization: token },
+      })
+      .then((res) => {
+        return { status: res.status, msg: res.data };
+      })
+      .catch((err) => {
+        return {
+          status: err.response.status,
+          msg: err.response.msg,
+        };
+      });
+
+    return response;
+  } catch (error) {
+    return;
+  }
+}
+
+export async function DeleteSignalService(token: string, id: string) {
+  try {
+    const response = await axiosClient
+      .delete(`/signals/delete/${id}`, {
+        headers: { Authorization: token },
+      })
+      .then((res) => {
+        return { status: res.status, msg: res.data };
+      })
+      .catch((err) => {
+        return {
+          status: err.response.status,
+          msg: err.response.msg,
+        };
+      });
+
+    return response;
+  } catch (error) {
+    return;
+  }
+}

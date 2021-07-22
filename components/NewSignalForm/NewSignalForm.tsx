@@ -56,6 +56,7 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
   const [entry_point, setEntryPoint] = useState("");
   const [stop_loss, setStopLoss] = useState("");
   const [take_profit, setTakeProfit] = useState("");
+  const [notes, setNotes] = useState("");
 
   const operation_type_items: any = [
     {
@@ -246,6 +247,12 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
         {errorState && errorState.takeProfit && (
           <ErrorMsg field={errorState.take_profit} />
         )}
+        <TextInput
+          value={notes}
+          onChangeText={setNotes}
+          placeholder="Notas adicionales (Opcional)"
+          style={{ ...styles.textinput }}
+        />
         <TouchableOpacity
           style={{ ...styles.btn__submit }}
           activeOpacity={0.6}

@@ -114,7 +114,9 @@ const Signal = ({
       {notes !== null && notes !== "" && (
         <View style={styles.notes__container}>
           <Text style={styles.notes__title}>Notas adicionales</Text>
-          <Text style={styles.notes__body}>{notes}</Text>
+          <Text style={styles.notes__body}>
+            <Text>{notes}</Text>
+          </Text>
         </View>
       )}
       {userInfo && userInfo.roles.includes("educator") && (

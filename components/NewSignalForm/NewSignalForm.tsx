@@ -116,6 +116,7 @@ const NewSignalForm = ({ setModalVisible }: NewSignalFormProps) => {
         entry_point,
         stop_loss,
         take_profit,
+        notes,
       };
 
       const token: any = await deviceStorage.getItem("authToken");

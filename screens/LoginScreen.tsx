@@ -16,8 +16,13 @@ const LoginScreen = () => {
       .getItem("authToken")
       .then((token: any) => {
         signIn(token);
+        if (!token) {
+          setLoading(false);
+        }
       })
-      .catch((err) => setLoading(false));
+      .catch((err) => {
+        setLoading(false);
+      });
   }, []);
 
   return (

@@ -34,11 +34,13 @@ export const AuthProvider = ({ children }: any) => {
     if (response.status === 200) {
       dispatch({ type: "SIGN_IN_SUCCESS", payload: response.user });
     } else {
+      deviceStorage.removeItem("authToken");
       dispatch({ type: "SIGN_IN_ERROR" });
     }
   };
 
   const signOut = () => {
+    deviceStorage.removeItem("authToken");
     dispatch({ type: "SIGN_OUT" });
   };
 
